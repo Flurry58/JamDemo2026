@@ -19,10 +19,6 @@ public class PlayerGeneral : MonoBehaviour
         movement = input.Get<Vector2>();
     }
 
-    private void FixedUpdate()
-    {
-        rb.linearVelocity = movement * moveSpeed;
-    }
 
     private void Awake()
     {
@@ -31,6 +27,22 @@ public class PlayerGeneral : MonoBehaviour
     void Start()
     {
        StartDetectingKey();
+    }
+
+    private void FixedUpdate()
+    {
+        float horizontal = 0f;
+
+        if (Keyboard.current.aKey.isPressed)
+            horizontal = -1f;
+
+        if (Keyboard.current.dKey.isPressed)
+            horizontal = 1f;
+
+        rb.linearVelocity = new Vector2(
+            horizontal * moveSpeed,
+            rb.linearVelocity.y
+        );
     }
 
     public void StartDetectingKey()

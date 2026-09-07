@@ -1,8 +1,7 @@
 using UnityEngine;
 using System;
-using System.Linq;
-using UnityEngine.InputSystem;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
 public class InputHandler : MonoBehaviour
@@ -11,7 +10,7 @@ public class InputHandler : MonoBehaviour
 
     private Action<Key> onKeyDetected;
 
-    void Awake()
+    private void Awake()
     {
         keybindings = new Dictionary<Key, Action>();
     }
@@ -19,6 +18,8 @@ public class InputHandler : MonoBehaviour
     public void RegisterKey(Action callback, Key keyToBind)
     {
         keybindings[keyToBind] = callback;
+
+        Debug.Log($"Registered {keyToBind}");
     }
 
     public void UnRegisterKey(Action callback, Key keyToBind)
@@ -33,44 +34,53 @@ public class InputHandler : MonoBehaviour
     public void DetectNextKey(Action<Key> callback)
     {
         onKeyDetected = callback;
+
+        Debug.Log("Waiting for key...");
     }
-    //AI GENERATED CODE BELOW
-    void Update()
+
+    private void Update()
     {
-        // Are we currently waiting for a key?
+        // --------------------------------
+        // REBINDING MODE
+        // --------------------------------
+
         if (onKeyDetected != null)
         {
-            if (Keyboard.current.anyKey.wasPressedThisFrame)
+            foreach (KeyControl key in Keyboard.current.allKeys)
             {
-                KeyControl pressedKey = Keyboard.current.allKeys
-                    .FirstOrDefault(k => k.wasPressedThisFrame && !k.synthetic);
+                if (!key.wasPressedThisFrame || key.synthetic)
+                    continue;
 
-                if (pressedKey != null)
-                {
-                    Key key = pressedKey.keyCode;
+                Key detectedKey = key.keyCode;
 
-                    Action<Key> callback = onKeyDetected;
-                    onKeyDetected = null;
+                Action<Key> callback = onKeyDetected;
+                onKeyDetected = null;
 
-                    callback(key);
-                }
+                callback(detectedKey);
+
+                // Only use the first key pressed for rebinding.
+                return;
             }
 
-            // Don't process the detected key as a normal binding.
             return;
         }
 
-        // Normal registered key handling
-        if (!Keyboard.current.anyKey.wasPressedThisFrame)
-            return;
+        // --------------------------------
+        // NORMAL INPUT
+        // --------------------------------
 
-        KeyControl keyPressed = Keyboard.current.allKeys
-            .FirstOrDefault(k => k.wasPressedThisFrame);
-
-        if (keyPressed != null &&
-            keybindings.TryGetValue(keyPressed.keyCode, out Action action))
+        foreach (KeyControl key in Keyboard.current.allKeys)
         {
-            action();
+            if (!key.wasPressedThisFrame || key.synthetic)
+                continue;
+
+            if (keybindings.TryGetValue(key.keyCode, out Action action))
+            {
+                Debug.Log($"Executing action for {key.keyCode}");
+
+                action();
+            }
         }
     }
 }
+
