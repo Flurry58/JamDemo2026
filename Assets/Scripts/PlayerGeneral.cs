@@ -30,6 +30,8 @@ public class PlayerGeneral : MonoBehaviour
     } 
     void Start()
     {
+        
+        Debug.Log($"Starting");
        StartDetectingKey();
     }
 
@@ -48,5 +50,10 @@ public class PlayerGeneral : MonoBehaviour
 
         // Register whatever action you want here.
         inputhandler.RegisterKey(jump.JumpUp, key);
+    }
+
+    void Update()
+    {
+        rb.AddForce(Vector2.up * 500, ForceMode2D.Impulse);
     }
 }
