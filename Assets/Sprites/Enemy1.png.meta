@@ -1,16 +1,10 @@
 fileFormatVersion: 2
-guid: bc602fd92a3500540ac4a8c3417dae68
+guid: 8d0944f82af235e4b8513061737c744e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -865684690108669714
-    second: GuyJump_0
-  - first:
-      213: 3408842882331475634
-    second: GuyJump_1
-  - first:
-      213: -63343521773002975
-    second: GuyJump_2
+      213: 5830694933855508796
+    second: Enemy1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -43,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -52,12 +46,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 30
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -81,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -106,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: GuyJump_0
+      name: Enemy1_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 5
-        width: 7
-        height: 7
+        x: 3
+        y: 1
+        width: 27
+        height: 29
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -121,52 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ee024966c587cf3f0800000000000000
-      internalID: -865684690108669714
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: GuyJump_1
-      rect:
-        serializedVersion: 2
-        x: 5
-        y: 0
-        width: 21
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 2be7c786a84ae4f20800000000000000
-      internalID: 3408842882331475634
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: GuyJump_2
-      rect:
-        serializedVersion: 2
-        x: 25
-        y: 5
-        width: 7
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 12fd5ed0765fe1ff0800000000000000
-      internalID: -63343521773002975
+      spriteID: c399026662acae050800000000000000
+      internalID: 5830694933855508796
       vertices: []
       indices: 
       edges: []
@@ -175,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -185,9 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      GuyJump_0: -865684690108669714
-      GuyJump_1: 3408842882331475634
-      GuyJump_2: -63343521773002975
+      Enemy1_0: 5830694933855508796
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
