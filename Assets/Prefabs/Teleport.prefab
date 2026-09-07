@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6595314719736521785}
-  - component: {fileID: 3591209603339708653}
+  - component: {fileID: 1432703793185076138}
   m_Layer: 0
-  m_Name: Jump
+  m_Name: Teleport
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3591209603339708653
+--- !u!114 &1432703793185076138
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,8 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8752224204006757687}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed89e6d35bb35154187de69c52f85588, type: 3}
+  m_Script: {fileID: 11500000, guid: e4ccec5da6c928e49921670fbd34c976, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
-  jumpForce: 10
-  groundDistanceCheck: 1.1
+  m_EditorClassIdentifier: Assembly-CSharp::Teleportation
+  teleportDistance: 3
