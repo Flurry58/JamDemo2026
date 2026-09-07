@@ -11,7 +11,7 @@ public class Jump : MonoBehaviour
     }
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rb = GetComponentInParent<Rigidbody2D>();
     }
 
     // Update is called once per frame
