@@ -16,6 +16,8 @@ public class PlayerGeneral : MonoBehaviour
 
     [SerializeField] private float moveSpeed = 5f;
 
+    private bool isDead = false;
+
     public Dictionary<int, Action> LevelAction;
 
     public int currentlevel;
@@ -163,6 +165,7 @@ public class PlayerGeneral : MonoBehaviour
             Death();
 
         }
+        
         if (collision.gameObject.layer == layerPortal)
         {
             Portal();
@@ -172,24 +175,28 @@ public class PlayerGeneral : MonoBehaviour
 
 
     public void Death()
-    {
-        if (currentlevel == 1)
+    {   
+        if (isDead == false)
         {
-            inputhandler.RemoveBinding("JumpUp");
-        } else if (currentlevel == 2)
-        {
-            inputhandler.RemoveBinding("TeleportForward");
+            isDead = true;
+            if (currentlevel == 1)
+            {
+                inputhandler.RemoveBinding("JumpUp");
+            } else if (currentlevel == 2)
+            {
+                inputhandler.RemoveBinding("TeleportForward");
+            }
+            moveSpeed = 0f;
+            GetComponent<SpriteRenderer>().enabled = false;
+            //gameOverVisual.SetActive(true);
+            GetComponent<PlayerInput>().enabled = false;
+            StartCoroutine(EndGame());
+            Vector3 spawnPosition = transform.position;
+
+            Quaternion spawnRotation = Quaternion.identity;
+
+            GameObject spawnedInstance = Instantiate(corpse, spawnPosition, spawnRotation);  
         }
-        moveSpeed = 0f;
-        GetComponent<SpriteRenderer>().enabled = false;
-        //gameOverVisual.SetActive(true);
-        GetComponent<PlayerInput>().enabled = false;
-        StartCoroutine(EndGame());
-        Vector3 spawnPosition = transform.position;
-
-        Quaternion spawnRotation = Quaternion.identity;
-
-        GameObject spawnedInstance = Instantiate(corpse, spawnPosition, spawnRotation);  
     }
     private IEnumerator EndGame()
     {
