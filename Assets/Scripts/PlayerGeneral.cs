@@ -16,18 +16,21 @@ public class PlayerGeneral : MonoBehaviour
 
     [SerializeField] private float moveSpeed = 5f;
 
+    private bool isDead = false;
+
     public Dictionary<int, Action> LevelAction;
 
     public int currentlevel;
     private float stepTimer = 0f;
     private Rigidbody2D rb;
-    private SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
     private Vector2 movement;
 
-    GameObject buttonspawn;
+    public GameObject buttonspawn;
     [SerializeField] private InputHandler inputhandler;
 
     public AudioClip walkSource;
+    private GameObject corpsespawn;
 
     private void Awake()
     {
@@ -35,24 +38,53 @@ public class PlayerGeneral : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         if (currentlevel != 0) {
-        LevelAction= new Dictionary<int, Action>
-        {
-            [1] = StartDetectingKey_Jump,
-            [2] = StartDetectingKey_Teleport,
-            [3] = StartDetectingKey_Shoot
-        };
+            LevelAction= new Dictionary<int, Action>
+            {
+                [1] = StartDetectingKey_Jump,
+                [2] = StartDetectingKey_Teleport,
+                [3] = StartDetectingKey_Shoot
+            };
         }
+        
+
 
     } 
     void Start()
     {
-        spriteRenderer.enabled = false;
-        Vector3 spawnPosition = transform.position;
 
-        Quaternion spawnRotation = Quaternion.identity;
-        buttonspawn = Instantiate(buttonselect, spawnPosition, spawnRotation);  
+        if (currentlevel == 1)
+        {
+            inputhandler.ResetBindings();
+        }
+        bool check1 = true;
+        bool check2 = true;
 
-        LevelAction[currentlevel]();
+        if (currentlevel >= 1)
+        {
+            //inputhandler.RemoveBinding("JumpUp");
+            check1 = inputhandler.RegisterByName("JumpUp", jump.JumpUp);
+        }
+
+        if (currentlevel >= 2)
+        {
+            //inputhandler.RemoveBinding("TeleportForward");
+            check2 = inputhandler.RegisterByName("TeleportForward", teleport.TeleportForward);
+        }
+
+        if (!check1 || !check2)
+        {
+            spriteRenderer.enabled = false;
+            Vector3 spawnPosition = transform.position;
+
+            Quaternion spawnRotation = Quaternion.identity;
+            buttonspawn = Instantiate(buttonselect, spawnPosition, spawnRotation);  
+
+            LevelAction[currentlevel]();
+        }
+        
+
+        
+        
     }
     protected void KeyBoundedSuccess()
     {
@@ -117,7 +149,9 @@ public class PlayerGeneral : MonoBehaviour
     }
     public void StartDetectingKey_Shoot()
     {
-       // inputhandler.DetectNextKey(, buttonspawn, KeyBoundedSuccess);
+       Destroy(buttonspawn);
+       KeyBoundedSuccess();
+       
     }
     public void StartDetectingKey_Teleport()
     {
@@ -139,6 +173,7 @@ public class PlayerGeneral : MonoBehaviour
             Death();
 
         }
+        
         if (collision.gameObject.layer == layerPortal)
         {
             Portal();
@@ -149,16 +184,28 @@ public class PlayerGeneral : MonoBehaviour
 
     public void Death()
     {
-        moveSpeed = 0f;
-        GetComponent<SpriteRenderer>().enabled = false;
-        //gameOverVisual.SetActive(true);
-        GetComponent<PlayerInput>().enabled = false;
-        StartCoroutine(EndGame());
-        Vector3 spawnPosition = transform.position;
+        
+        if (corpsespawn == null)
+        {
+            if (currentlevel == 1)
+            {
+                inputhandler.RemoveBinding("JumpUp");
+            } else if (currentlevel == 2)
+            {
+                inputhandler.RemoveBinding("TeleportForward");
+            }
+            moveSpeed = 0f;
+            GetComponent<SpriteRenderer>().enabled = false;
+            //gameOverVisual.SetActive(true);
+            GetComponent<PlayerInput>().enabled = false;
+            StartCoroutine(EndGame());
+            Vector3 spawnPosition = transform.position;
 
-        Quaternion spawnRotation = Quaternion.identity;
+            Quaternion spawnRotation = Quaternion.identity;
 
-        GameObject spawnedInstance = Instantiate(corpse, spawnPosition, spawnRotation);  
+            corpsespawn = Instantiate(corpse, spawnPosition, spawnRotation);  
+        }
+        
     }
     private IEnumerator EndGame()
     {
