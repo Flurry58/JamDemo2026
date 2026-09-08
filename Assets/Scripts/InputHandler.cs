@@ -17,6 +17,11 @@ public class InputHandler : MonoBehaviour
     private Action keybounded;
     private GameObject buttonspawn;
 
+    public void ResetBindings()
+{
+    savedBindings.Clear();
+    keybindings.Clear();
+}
     public bool RegisterByName(string actionName, Action callback)
     {
         if (!savedBindings.TryGetValue(actionName, out Key keyToUse))
