@@ -21,7 +21,7 @@ public class PlayerGeneral : MonoBehaviour
     private Vector2 movement;
     [SerializeField] private InputHandler inputhandler;
 
-    [SerializeField] private AudioSource walkSource;
+    public AudioClip walkSource;
 
     private void Awake()
     {
@@ -31,7 +31,7 @@ public class PlayerGeneral : MonoBehaviour
     void Start()
     {
         
-       StartDetectingKey_Jump();
+       StartDetectingKey_Teleport();
     }
 
     private void FixedUpdate()
@@ -56,7 +56,9 @@ public class PlayerGeneral : MonoBehaviour
 
         if (movement.magnitude > 0 && stepTimer <= 0)
         {
-            walkSource.Play();
+            if (walkSource != null) {
+                AudioSource.PlayClipAtPoint(walkSource, transform.position);
+            }
             stepTimer = stepDelay;
         }
     }
@@ -72,18 +74,6 @@ public class PlayerGeneral : MonoBehaviour
             spriteRenderer.flipX = true;  
         }
     }
-
-    public void OnTeleport(InputValue input)
-    {
-    //teleport.TeleportForward();
-        Vector2 direction = transform.right; 
-        Vector2 targetPosition = rb.position + (direction * 3f);
-
-        rb.linearVelocity = Vector2.zero;
-
-        rb.position = targetPosition;
-    }
-
 
     public Vector2 GetMovementDirection()
     {
@@ -115,10 +105,10 @@ public class PlayerGeneral : MonoBehaviour
         int layerAcid = LayerMask.NameToLayer("Acid");
 
         if (collision.gameObject.layer == layerAcid)
-    {
-        Death();
+        {
+            Death();
 
-    }
+        }
     }
 
 

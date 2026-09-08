@@ -8,7 +8,7 @@ public class InputHandler : MonoBehaviour
 {
     private Dictionary<Key, Action> keybindings;
 
-    private bool onKeyDetected;
+    private bool onKeyDetected = false;
     private Action tobind;
 
     private void Awake()

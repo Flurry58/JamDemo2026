@@ -5,9 +5,14 @@ public class Teleportation : MonoBehaviour
     [SerializeField] private float teleportDistance = 3f;
     private Rigidbody2D Rigidbody;
 
-    void Start()
+    void Awake()
     {
-        Rigidbody = GetComponent<Rigidbody2D>();
+        Rigidbody = GetComponentInParent<Rigidbody2D>();
+
+        if (Rigidbody == null)
+        {
+            Debug.LogError("Jump: Could not find a Rigidbody2D on this object or its parent!");
+        }
     }
 
     public void TeleportForward()
