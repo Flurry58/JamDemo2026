@@ -4,6 +4,7 @@ using System.Collections;
 using NUnit.Framework;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System;
 
 public class PlayerGeneral : MonoBehaviour
 {
@@ -20,9 +21,7 @@ public class PlayerGeneral : MonoBehaviour
     private Vector2 movement;
     [SerializeField] private InputHandler inputhandler;
 
-    private bool bDetectKey;
-    private Key kCode;
-    private AudioSource walkSource;
+    [SerializeField] private AudioSource walkSource;
 
     private void Awake()
     {
@@ -95,31 +94,15 @@ public class PlayerGeneral : MonoBehaviour
 
     public void StartDetectingKey_Jump()
     {
-        bDetectKey = true;
-        inputhandler.DetectNextKey(OnKeyDetected);
+        inputhandler.DetectNextKey(jump.JumpUp);
     }
     public void StartDetectingKey_Shoot()
     {
-        bDetectKey = false;
-        inputhandler.DetectNextKey(OnKeyDetected);
+       // inputhandler.DetectNextKey();
     }
     public void StartDetectingKey_Teleport()
     {
-        bDetectKey = false;
-        inputhandler.DetectNextKey(OnKeyDetected);
-    }
-
-
-    private void OnKeyDetected(Key key)
-    {
-        kCode = key;
-        bDetectKey = false;
-
-        Debug.Log($"Detected key: {key}");
-
-        // Register whatever action you want here.
-        inputhandler.RegisterKey(jump.JumpUp, key);
-    
+        inputhandler.DetectNextKey(teleport.TeleportForward);
     }
 
     void Update()
