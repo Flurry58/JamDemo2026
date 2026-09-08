@@ -35,24 +35,46 @@ public class PlayerGeneral : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         if (currentlevel != 0) {
-        LevelAction= new Dictionary<int, Action>
-        {
-            [1] = StartDetectingKey_Jump,
-            [2] = StartDetectingKey_Teleport,
-            [3] = StartDetectingKey_Shoot
-        };
+            LevelAction= new Dictionary<int, Action>
+            {
+                [1] = StartDetectingKey_Jump,
+                [2] = StartDetectingKey_Teleport,
+                [3] = StartDetectingKey_Shoot
+            };
         }
+        
+
 
     } 
     void Start()
     {
-        spriteRenderer.enabled = false;
-        Vector3 spawnPosition = transform.position;
+        bool check1 = true;
+        bool check2 = true;
 
-        Quaternion spawnRotation = Quaternion.identity;
-        buttonspawn = Instantiate(buttonselect, spawnPosition, spawnRotation);  
+        if (currentlevel >= 1)
+        {
+            check1 = inputhandler.RegisterByName("JumpUp", jump.JumpUp);
+        }
 
-        LevelAction[currentlevel]();
+        if (currentlevel >= 2)
+        {
+            check2 = inputhandler.RegisterByName("TeleportForward", teleport.TeleportForward);
+        }
+
+        if (!check1 || !check2)
+        {
+            spriteRenderer.enabled = false;
+            Vector3 spawnPosition = transform.position;
+
+            Quaternion spawnRotation = Quaternion.identity;
+            buttonspawn = Instantiate(buttonselect, spawnPosition, spawnRotation);  
+
+            LevelAction[currentlevel]();
+        }
+        
+
+        
+        
     }
     protected void KeyBoundedSuccess()
     {
@@ -117,7 +139,9 @@ public class PlayerGeneral : MonoBehaviour
     }
     public void StartDetectingKey_Shoot()
     {
-       // inputhandler.DetectNextKey(, buttonspawn, KeyBoundedSuccess);
+       Destroy(buttonspawn);
+       KeyBoundedSuccess();
+       
     }
     public void StartDetectingKey_Teleport()
     {
@@ -149,6 +173,13 @@ public class PlayerGeneral : MonoBehaviour
 
     public void Death()
     {
+        if (currentlevel == 1)
+        {
+            inputhandler.RemoveBinding("JumpUp");
+        } else if (currentlevel == 2)
+        {
+            inputhandler.RemoveBinding("TeleportForward");
+        }
         moveSpeed = 0f;
         GetComponent<SpriteRenderer>().enabled = false;
         //gameOverVisual.SetActive(true);
