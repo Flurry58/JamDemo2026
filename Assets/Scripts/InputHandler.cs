@@ -12,7 +12,7 @@ public class InputHandler : MonoBehaviour
 
     private bool onKeyDetected = false;
     private Action tobind;
-
+    private Action keybounded;
     private GameObject buttonspawn;
 
     private void Awake()
@@ -36,12 +36,12 @@ public class InputHandler : MonoBehaviour
         }
     }
 
-    public void DetectNextKey(Action boundaction, GameObject uidisplay)
+    public void DetectNextKey(Action boundaction, GameObject uidisplay, Action KeyBounded)
     {
         onKeyDetected = true;
         tobind = boundaction;
         buttonspawn = uidisplay;
-
+        keybounded = KeyBounded;
         Debug.Log("Waiting for key...");
     }
 
@@ -62,10 +62,11 @@ public class InputHandler : MonoBehaviour
                 if (!wasdKeys.Contains(detectedKey))
                 {
                     onKeyDetected = false;
+                    
                     Destroy(buttonspawn);
 
                     RegisterKey(tobind, detectedKey);
-
+                    keybounded();
                     // Only use the first key pressed for rebinding.
                     return;
                 }

@@ -120,6 +120,7 @@ MonoBehaviour:
   buttonselect: {fileID: 6176062168833234923, guid: f96771f6187f9984d9c460025027c405, type: 3}
   stepDelay: 0.175
   moveSpeed: 5
+  currentlevel: 1
   inputhandler: {fileID: 1688947297014829183}
   walkSource: {fileID: 8300000, guid: 94253e254cae9124da3f7a9605263686, type: 3}
 --- !u!95 &8610005372394481704
