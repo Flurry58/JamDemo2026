@@ -1,9 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
-using NUnit.Framework;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using System.Collections.Generic;
 using System;
 
 public class PlayerGeneral : MonoBehaviour
@@ -17,7 +16,10 @@ public class PlayerGeneral : MonoBehaviour
 
     [SerializeField] private float moveSpeed = 5f;
 
-     private float stepTimer = 0f;
+    public Dictionary<int, Action> LevelAction;
+
+    public int currentlevel;
+    private float stepTimer = 0f;
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private Vector2 movement;
@@ -31,6 +33,14 @@ public class PlayerGeneral : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>(); 
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        LevelAction= new Dictionary<int, Action>
+        {
+            [1] = StartDetectingKey_Jump,
+            [2] = StartDetectingKey_Teleport,
+            [3] = StartDetectingKey_Shoot
+        };
+
     } 
     void Start()
     {
@@ -40,18 +50,16 @@ public class PlayerGeneral : MonoBehaviour
         Quaternion spawnRotation = Quaternion.identity;
         buttonspawn = Instantiate(buttonselect, spawnPosition, spawnRotation);  
 
-
-        StartDetectingKey_Teleport();
+        LevelAction[currentlevel]();
     }
-
+    protected void KeyBoundedSuccess()
+    {
+        spriteRenderer.enabled = true;
+    }
     private void FixedUpdate()
     {
         if (buttonspawn == null)
         {
-            if (!spriteRenderer.enabled)
-            {
-                spriteRenderer.enabled = true;
-            }
             float horizontal = 0f;
             if (Keyboard.current.aKey.isPressed)
                 horizontal = -1f;
@@ -102,16 +110,16 @@ public class PlayerGeneral : MonoBehaviour
     public void StartDetectingKey_Jump()
     {
         
-        inputhandler.DetectNextKey(jump.JumpUp, buttonspawn);
+        inputhandler.DetectNextKey(jump.JumpUp, buttonspawn, KeyBoundedSuccess);
 
     }
     public void StartDetectingKey_Shoot()
     {
-       // inputhandler.DetectNextKey(, buttonspawn);
+       // inputhandler.DetectNextKey(, buttonspawn, KeyBoundedSuccess);
     }
     public void StartDetectingKey_Teleport()
     {
-        inputhandler.DetectNextKey(teleport.TeleportForward, buttonspawn);
+        inputhandler.DetectNextKey(teleport.TeleportForward, buttonspawn, KeyBoundedSuccess);
     }
 
     void Update()
