@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5252035590485404765}
   - component: {fileID: -3295431424992144252}
   - component: {fileID: -863029222671825898}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Laser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,7 +83,8 @@ GameObject:
   - component: {fileID: 444297687982544410}
   - component: {fileID: 6731927118547262347}
   - component: {fileID: 109186635386968635}
-  m_Layer: 0
+  - component: {fileID: 5718158666318490161}
+  m_Layer: 3
   m_Name: Block2_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -210,3 +211,16 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.3670535, y: 0.11245459}
   m_EdgeRadius: 0
+--- !u!114 &5718158666318490161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7030900218630585305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33fed0aa2f5d79c49beb6707f407e10f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Laser
+  lifeTime: 1
