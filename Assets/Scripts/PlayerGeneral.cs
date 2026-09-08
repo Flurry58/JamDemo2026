@@ -16,6 +16,8 @@ public class PlayerGeneral : MonoBehaviour
 
     [SerializeField] private float moveSpeed = 5f;
 
+    private bool isDead = false;
+
     public Dictionary<int, Action> LevelAction;
 
     public int currentlevel;
@@ -171,6 +173,7 @@ public class PlayerGeneral : MonoBehaviour
             Death();
 
         }
+        
         if (collision.gameObject.layer == layerPortal)
         {
             Portal();
