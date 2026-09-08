@@ -117,6 +117,7 @@ MonoBehaviour:
   jump: {fileID: 7078306501982155574}
   teleport: {fileID: 6078081711005591754}
   corpse: {fileID: 5592838529395713935, guid: c186d163ff208dc4c811daa92ef95949, type: 3}
+  buttonselect: {fileID: 6176062168833234923, guid: f96771f6187f9984d9c460025027c405, type: 3}
   stepDelay: 0.175
   moveSpeed: 5
   inputhandler: {fileID: 1688947297014829183}
