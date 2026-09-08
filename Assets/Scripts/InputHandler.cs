@@ -8,7 +8,8 @@ public class InputHandler : MonoBehaviour
 {
     private Dictionary<Key, Action> keybindings;
 
-    private Action<Key> onKeyDetected;
+    private bool onKeyDetected = false;
+    private Action tobind;
 
     private void Awake()
     {
@@ -31,9 +32,10 @@ public class InputHandler : MonoBehaviour
         }
     }
 
-    public void DetectNextKey(Action<Key> callback)
+    public void DetectNextKey(Action boundaction)
     {
-        onKeyDetected = callback;
+        onKeyDetected = true;
+        tobind = boundaction;
 
         Debug.Log("Waiting for key...");
     }
@@ -44,7 +46,7 @@ public class InputHandler : MonoBehaviour
         // REBINDING MODE
         // --------------------------------
 
-        if (onKeyDetected != null)
+        if (onKeyDetected == true)
         {
             foreach (KeyControl key in Keyboard.current.allKeys)
             {
@@ -53,10 +55,10 @@ public class InputHandler : MonoBehaviour
 
                 Key detectedKey = key.keyCode;
 
-                Action<Key> callback = onKeyDetected;
-                onKeyDetected = null;
+                
+                onKeyDetected = false;
 
-                callback(detectedKey);
+                RegisterKey(tobind, detectedKey);
 
                 // Only use the first key pressed for rebinding.
                 return;
