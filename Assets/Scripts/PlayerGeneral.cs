@@ -11,6 +11,8 @@ public class PlayerGeneral : MonoBehaviour
     [SerializeField] private Jump jump;
     [SerializeField] private Teleportation teleport;
     [SerializeField] private GameObject corpse;
+
+    [SerializeField] private GameObject buttonselect;
     [SerializeField] private float stepDelay = 0.175f;
 
     [SerializeField] private float moveSpeed = 5f;
@@ -19,6 +21,8 @@ public class PlayerGeneral : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private Vector2 movement;
+
+    GameObject buttonspawn;
     [SerializeField] private InputHandler inputhandler;
 
     public AudioClip walkSource;
@@ -30,37 +34,50 @@ public class PlayerGeneral : MonoBehaviour
     } 
     void Start()
     {
-        
-       StartDetectingKey_Teleport();
+        spriteRenderer.enabled = false;
+        Vector3 spawnPosition = transform.position;
+
+        Quaternion spawnRotation = Quaternion.identity;
+        buttonspawn = Instantiate(buttonselect, spawnPosition, spawnRotation);  
+
+
+        StartDetectingKey_Teleport();
     }
 
     private void FixedUpdate()
     {
-
-        float horizontal = 0f;
-        if (Keyboard.current.aKey.isPressed)
-            horizontal = -1f;
-
-        if (Keyboard.current.dKey.isPressed)
-            horizontal = 1f;
-
-        rb.linearVelocity = new Vector2(
-            horizontal * moveSpeed,
-            rb.linearVelocity.y
-        );
-
-        if (stepTimer > 0) //walking sound timer
+        if (buttonspawn == null)
         {
-            stepTimer -= Time.fixedDeltaTime;
-        }
-
-        if (movement.magnitude > 0 && stepTimer <= 0)
-        {
-            if (walkSource != null) {
-                AudioSource.PlayClipAtPoint(walkSource, transform.position);
+            if (!spriteRenderer.enabled)
+            {
+                spriteRenderer.enabled = true;
             }
-            stepTimer = stepDelay;
+            float horizontal = 0f;
+            if (Keyboard.current.aKey.isPressed)
+                horizontal = -1f;
+
+            if (Keyboard.current.dKey.isPressed)
+                horizontal = 1f;
+
+            rb.linearVelocity = new Vector2(
+                horizontal * moveSpeed,
+                rb.linearVelocity.y
+            );
+
+            if (stepTimer > 0) //walking sound timer
+            {
+                stepTimer -= Time.fixedDeltaTime;
+            }
+
+            if (movement.magnitude > 0 && stepTimer <= 0)
+            {
+                if (walkSource != null) {
+                    AudioSource.PlayClipAtPoint(walkSource, transform.position);
+                }
+                stepTimer = stepDelay;
+            }
         }
+        
     }
     public void OnMove(InputValue input)
     {
@@ -84,15 +101,17 @@ public class PlayerGeneral : MonoBehaviour
 
     public void StartDetectingKey_Jump()
     {
-        inputhandler.DetectNextKey(jump.JumpUp);
+        
+        inputhandler.DetectNextKey(jump.JumpUp, buttonspawn);
+
     }
     public void StartDetectingKey_Shoot()
     {
-       // inputhandler.DetectNextKey();
+       // inputhandler.DetectNextKey(, buttonspawn);
     }
     public void StartDetectingKey_Teleport()
     {
-        inputhandler.DetectNextKey(teleport.TeleportForward);
+        inputhandler.DetectNextKey(teleport.TeleportForward, buttonspawn);
     }
 
     void Update()

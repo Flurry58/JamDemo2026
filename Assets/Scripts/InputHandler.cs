@@ -7,9 +7,13 @@ using UnityEngine.InputSystem.Controls;
 public class InputHandler : MonoBehaviour
 {
     private Dictionary<Key, Action> keybindings;
+    private static readonly HashSet<Key> wasdKeys = new HashSet<Key> { Key.W, Key.A, Key.S, Key.D };
+
 
     private bool onKeyDetected = false;
     private Action tobind;
+
+    private GameObject buttonspawn;
 
     private void Awake()
     {
@@ -32,10 +36,11 @@ public class InputHandler : MonoBehaviour
         }
     }
 
-    public void DetectNextKey(Action boundaction)
+    public void DetectNextKey(Action boundaction, GameObject uidisplay)
     {
         onKeyDetected = true;
         tobind = boundaction;
+        buttonspawn = uidisplay;
 
         Debug.Log("Waiting for key...");
     }
@@ -54,14 +59,18 @@ public class InputHandler : MonoBehaviour
                     continue;
 
                 Key detectedKey = key.keyCode;
+                if (!wasdKeys.Contains(detectedKey))
+                {
+                    onKeyDetected = false;
+                    Destroy(buttonspawn);
 
+                    RegisterKey(tobind, detectedKey);
+
+                    // Only use the first key pressed for rebinding.
+                    return;
+                }
                 
-                onKeyDetected = false;
-
-                RegisterKey(tobind, detectedKey);
-
-                // Only use the first key pressed for rebinding.
-                return;
+                
             }
 
             return;
