@@ -34,12 +34,14 @@ public class PlayerGeneral : MonoBehaviour
         rb = GetComponent<Rigidbody2D>(); 
         spriteRenderer = GetComponent<SpriteRenderer>();
 
+        if (currentlevel != 0) {
         LevelAction= new Dictionary<int, Action>
         {
             [1] = StartDetectingKey_Jump,
             [2] = StartDetectingKey_Teleport,
             [3] = StartDetectingKey_Shoot
         };
+        }
 
     } 
     void Start()
@@ -130,10 +132,16 @@ public class PlayerGeneral : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         int layerAcid = LayerMask.NameToLayer("Acid");
+        int layerPortal = LayerMask.NameToLayer("Portal");
 
         if (collision.gameObject.layer == layerAcid)
         {
             Death();
+
+        }
+        if (collision.gameObject.layer == layerPortal)
+        {
+            Portal();
 
         }
     }
@@ -162,4 +170,18 @@ public class PlayerGeneral : MonoBehaviour
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentSceneIndex);
     }
+
+    private void Portal()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        
+        int nextSceneIndex = currentSceneIndex + 1;
+
+        if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
+        {
+            SceneManager.LoadScene(nextSceneIndex);
+        }
+    }
+
+
 }
