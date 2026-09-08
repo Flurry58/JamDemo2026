@@ -77,7 +77,7 @@ public class PlayerGeneral : MonoBehaviour
 
     public Vector2 GetMovementDirection()
     {
-    return movement;
+        return movement;
     }
 
     
